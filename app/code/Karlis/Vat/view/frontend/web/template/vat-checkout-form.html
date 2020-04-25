@@ -4,8 +4,11 @@
             <legend data-bind="i18n: 'Vat Checkout Form'"></legend>
             <p data-bind="html: details() "></p>
             <!-- ko foreach: getRegion('vat-checkout-form-fields') -->
-                <!-- ko template: getTemplate() --><!-- /ko -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
             <!--/ko-->
+            <div class="loading-vat" data-bind="visible: isLoading()">
+                <span data-bind="i18n: 'Validating...'"></span>
+            </div>
         </fieldset>
         <button type="reset">
             <span data-bind="i18n: 'Reset'"></span>
