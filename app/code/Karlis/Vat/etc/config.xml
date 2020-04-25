@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <karlis_vat>
+            <general>
+                <resource_id>25e80bf3-f107-4ab4-89ef-251b5b9374e9</resource_id>
+            </general>
+        </karlis_vat>
+    </default>
+</config>

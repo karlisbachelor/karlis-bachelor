@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="karlis" sortOrder="999" translate="label">
+            <label>Karlis</label>
+        </tab>
+        <section id="karlis_vat" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+            <label>Vat</label>
+            <tab>karlis</tab>
+            <resource>Karlis_Vat::config_karlis_vat</resource>
+            <group id="general" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+                <label>General</label>
+                <field id="resource_id" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10"
+                       translate="label" type="text">
+                    <label>Resource ID</label>
+                    <comment>
+                        <![CDATA[This is data.gov.lv resource id. You can find it <a href="https://data.gov.lv/dati/lv/dataset/uz">here</a>.]]></comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
