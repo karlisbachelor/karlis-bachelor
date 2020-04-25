@@ -16,5 +16,17 @@
         <button type="button" data-bind="click: onSubmit" class="action">
             <span data-bind="i18n: 'Submit'"></span>
         </button>
+
+        <div class="message-success success message" data-bind="visible: isValid">
+            <span data-bind="i18n: 'Your Registration Code is valid!'"></span>
+        </div>
+        <div class="message-error error message" data-bind="visible: isInvalid">
+            <span data-bind="i18n: 'Your Registration Code is invalid!'"></span>
+        </div>
+
+        <div class="result-preview" data-bind="visible: apiResult">
+            <h3>data.gov.lv API result:</h3>
+            <pre data-bind="html: apiResult"></pre>
+        </div>
     </form>
 </div>

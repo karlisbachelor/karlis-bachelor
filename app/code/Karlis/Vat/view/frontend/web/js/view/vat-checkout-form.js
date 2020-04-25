@@ -13,6 +13,9 @@ define([
     return Component.extend({
 
         isLoading: ko.observable(false),
+        apiResult: ko.observable(false),
+        isValid: ko.observable(false),
+        isInvalid: ko.observable(false),
         // errorValidationMessage: ko.observable(false),
 
         initialize: function () {
@@ -35,21 +38,34 @@ define([
 
             var formData = this.source.get('vatCheckoutForm');
 
-            console.log(formData);
-            console.log(formData.hasOwnProperty('vat_number'));
-            console.log(formData['vat_number']);
-
             // verify that form data is valid
-            if (formData.hasOwnProperty('vat_number') && formData['vat_number'] !== "") {
+            if (formData.hasOwnProperty('sepa') && formData['sepa'] !== "") {
                 // Call ajax
-                this._ajax(backendUrl, {'vat_number': formData['vat_number']}, this._onSubmit);
+                this._ajax(backendUrl, {'sepa': formData['sepa']}, this._onSubmit);
             }
         },
 
 
         _onSubmit: function (response) {
+            // Console log response
             console.log('_onSubmitComplete');
             console.log(response);
+
+            // Parse api respons to the json format
+            var resultJson = JSON.parse(response.data['api_response']);
+
+            // Print API response
+            this.apiResult(JSON.stringify(resultJson, undefined, 4));
+
+            // Show notice
+            if (resultJson.success === true
+                && resultJson.result && resultJson.result.records
+                && resultJson.result.records.length === 1) {
+                this.isValid(true);
+            } else {
+                this.isInvalid(true);
+            }
+
         },
 
 
@@ -70,6 +86,9 @@ define([
                 beforeSend: function () {
                     // Show loading message
                     this.isLoading(true);
+                    this.apiResult(false);
+                    this.isValid(false);
+                    this.isInvalid(false);
                 },
 
                 /** @inheritdoc */
