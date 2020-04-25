@@ -114,5 +114,18 @@ define([
                 console.log(JSON.stringify(error));
             });
         },
+
+        /**
+         * Reset form.
+         * TODO: apply tax back
+         */
+        onReset: function () {
+            this.reset();
+
+            this.isLoading(false);
+            this.apiResult(false);
+            this.isValid(false);
+            this.isInvalid(false);
+        },
     });
 });
