@@ -4,9 +4,10 @@
 namespace Karlis\Vat\Controller\Index;
 
 
+use Magento\Framework\App\Action\Context;
 use Magento\Framework\Exception\LocalizedException;
 
-class ValidateAndApply extends \Magento\Framework\App\Action\Action
+class ValidateAndApply extends AbstractJsonResponse
 {
     /**
      * @var \Magento\Framework\View\Result\PageFactory
@@ -34,9 +35,14 @@ class ValidateAndApply extends \Magento\Framework\App\Action\Action
     protected $checkoutSession;
 
     /**
-     * Constructor
+     * @var \Psr\Log\LoggerInterface
+     */
+    protected $logger;
+
+    /**
+     * ValidateAndApply constructor.
      *
-     * @param \Magento\Framework\App\Action\Context $context
+     * @param Context $context
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      * @param \Magento\Framework\Json\Helper\Data $jsonHelper
      * @param \Psr\Log\LoggerInterface $logger
@@ -45,7 +51,7 @@ class ValidateAndApply extends \Magento\Framework\App\Action\Action
      * @param \Magento\Checkout\Model\Session $checkoutSession
      */
     public function __construct(
-        \Magento\Framework\App\Action\Context $context,
+        Context $context,
         \Magento\Framework\View\Result\PageFactory $resultPageFactory,
         \Magento\Framework\Json\Helper\Data $jsonHelper,
         \Psr\Log\LoggerInterface $logger,
@@ -53,10 +59,8 @@ class ValidateAndApply extends \Magento\Framework\App\Action\Action
         \Karlis\Vat\Model\DataGov $dataGov,
         \Magento\Checkout\Model\Session $checkoutSession
     ) {
-        parent::__construct($context);
+        parent::__construct($context, $resultPageFactory, $jsonHelper);
 
-        $this->resultPageFactory = $resultPageFactory;
-        $this->jsonHelper = $jsonHelper;
         $this->logger = $logger;
         $this->karlisHelper = $karlisHelper;
         $this->dataGov = $dataGov;
@@ -135,39 +139,5 @@ class ValidateAndApply extends \Magento\Framework\App\Action\Action
         }
 
         return true;
-    }
-
-    /**
-     * JSON response builder.
-     *
-     * @param $data
-     * @param string $error
-     */
-    private function jsonResponse($data = '', string $error = '')
-    {
-        $this->getResponse()->representJson(
-            $this->jsonHelper->jsonEncode($this->getResponseData($data, $error))
-        );
-    }
-
-    /**
-     * Returns response data.
-     *
-     * @param $data
-     * @param string $error
-     * @return array
-     */
-    private function getResponseData($data = '', string $error = ''): array
-    {
-        $response = ['data' => $data, 'success' => true];
-
-        if (!empty($error)) {
-            $response = [
-                'success' => false,
-                'error_message' => $error,
-            ];
-        }
-
-        return $response;
     }
 }
