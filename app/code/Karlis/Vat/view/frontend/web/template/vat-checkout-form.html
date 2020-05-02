@@ -6,10 +6,11 @@
             <!-- ko foreach: getRegion('vat-checkout-form-fields') -->
             <!-- ko template: getTemplate() --><!-- /ko -->
             <!--/ko-->
-            <div class="loading-vat" data-bind="visible: isLoading()">
-                <span data-bind="i18n: 'Validating...'"></span>
-            </div>
         </fieldset>
+
+        <div class="loading-vat" data-bind="visible: isLoading">
+            <span data-bind="html: isLoading"></span>
+        </div>
 
         <div class="message-success success message" data-bind="visible: isValid">
             <span data-bind="html: isValid"></span>

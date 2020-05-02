@@ -8,7 +8,8 @@ define([
 ], function (Component, $t, ko, $, url) {
     'use strict';
 
-    const backendUrl = url.build('vat/index/validateandapply');
+    const backendSubmitUrl = url.build('vat/index/validateandapply');
+    const backendResetUrl = url.build('vat/index/reset');
 
     return Component.extend({
 
@@ -40,17 +41,33 @@ define([
             // verify that form data is valid
             if (formData.hasOwnProperty('sepa') && formData['sepa'] !== "") {
                 // Call ajax
-                this._ajax(backendUrl, {'sepa': formData['sepa']}, this._onSubmit);
+                this._ajax(backendSubmitUrl, {'sepa': formData['sepa']}, this._onSubmit, $t('Validating...'));
             }
         },
 
-
+        /**
+         * On submit callback
+         *
+         * @param data
+         * @private
+         */
         _onSubmit: function (data) {
-            // Parse api respons to the json format
             if (data.sepaValid) {
                 this.isValid(data.message);
             } else {
                 this.isInvalid(data.message);
+            }
+        },
+
+        /**
+         * On reset callback.
+         * @param data
+         * @private
+         */
+        _onReset: function (data) {
+            // Parse api respons to the json format
+            if (data.message) {
+                this.isValid(data.message);
             }
         },
 
@@ -59,8 +76,9 @@ define([
          * @param {String} url - ajax url
          * @param {Object} data - post data for ajax call
          * @param {Function} callback - callback method to execute after AJAX success
+         * @param {String} loadingMsg
          */
-        _ajax: function (url, data, callback) {
+        _ajax: function (url, data, callback, loadingMsg = $t('Loading...')) {
             $.ajax({
                 url: url,
                 data: data,
@@ -71,7 +89,7 @@ define([
                 /** @inheritdoc */
                 beforeSend: function () {
                     // Show loading message
-                    this.isLoading(true);
+                    this.isLoading(loadingMsg);
                     this.isValid(false);
                     this.isInvalid(false);
                 },
@@ -102,14 +120,10 @@ define([
 
         /**
          * Reset form.
-         * TODO: apply tax back
          */
         onReset: function () {
             this.reset();
-
-            this.isLoading(false);
-            this.isValid(false);
-            this.isInvalid(false);
+            this._ajax(backendResetUrl, {}, this._onReset, $t('Resets...'));
         },
     });
 });
