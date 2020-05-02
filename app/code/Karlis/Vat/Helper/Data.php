@@ -8,6 +8,7 @@ use Magento\Store\Model\ScopeInterface;
 class Data extends AbstractHelper
 {
     const XML_PATH_KARLIS_VAT_RESOURCE_ID = 'karlis_vat/general/resource_id';
+    const CHECKOUT_SESSION_EXCLUDE_TAX_KEY = 'vat_valid_exclude_tax';
 
     /**
      * Get resource ID from configurations.
