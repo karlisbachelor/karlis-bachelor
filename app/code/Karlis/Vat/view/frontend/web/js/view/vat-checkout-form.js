@@ -133,7 +133,7 @@ define([
          * Reset form.
          */
         onReset: function () {
-            this.reset();
+            $('#vat-checkout-form input').val('');
             this._ajax(backendResetUrl, {}, this._onReset, $t('Resets...'));
         },
     });
