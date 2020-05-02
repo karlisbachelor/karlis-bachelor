@@ -13,7 +13,6 @@ define([
     return Component.extend({
 
         isLoading: ko.observable(false),
-        apiResult: ko.observable(false),
         isValid: ko.observable(false),
         isInvalid: ko.observable(false),
         // errorValidationMessage: ko.observable(false),
@@ -46,26 +45,13 @@ define([
         },
 
 
-        _onSubmit: function (response) {
-            // Console log response
-            console.log('_onSubmitComplete');
-            console.log(response);
-
+        _onSubmit: function (data) {
             // Parse api respons to the json format
-            var resultJson = JSON.parse(response.data['api_response']);
-
-            // Print API response
-            this.apiResult(JSON.stringify(resultJson, undefined, 4));
-
-            // Show notice
-            if (resultJson.success === true
-                && resultJson.result && resultJson.result.records
-                && resultJson.result.records.length === 1) {
-                this.isValid(true);
+            if (data.sepaValid) {
+                this.isValid(data.message);
             } else {
-                this.isInvalid(true);
+                this.isInvalid(data.message);
             }
-
         },
 
 
@@ -86,7 +72,6 @@ define([
                 beforeSend: function () {
                     // Show loading message
                     this.isLoading(true);
-                    this.apiResult(false);
                     this.isValid(false);
                     this.isInvalid(false);
                 },
@@ -100,7 +85,7 @@ define([
                 var msg;
 
                 if (response.success) {
-                    callback.call(this, response);
+                    callback.call(this, response.data);
                 } else {
                     msg = response['error_message'];
 
@@ -123,7 +108,6 @@ define([
             this.reset();
 
             this.isLoading(false);
-            this.apiResult(false);
             this.isValid(false);
             this.isInvalid(false);
         },
