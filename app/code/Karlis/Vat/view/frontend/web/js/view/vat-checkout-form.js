@@ -4,8 +4,10 @@ define([
     'mage/translate',
     'ko',
     'jquery',
-    'mage/url'
-], function (Component, $t, ko, $, url) {
+    'mage/url',
+    'Magento_Checkout/js/model/quote',
+    'Magento_Checkout/js/model/cart/totals-processor/default'
+], function (Component, $t, ko, $, url, quote, totalsDefaultProvider) {
     'use strict';
 
     const backendSubmitUrl = url.build('vat/index/validateandapply');
@@ -52,6 +54,8 @@ define([
          * @private
          */
         _onSubmit: function (data) {
+            this.refreshTotals();
+
             if (data.sepaValid) {
                 this.isValid(data.message);
             } else {
@@ -65,12 +69,19 @@ define([
          * @private
          */
         _onReset: function (data) {
-            // Parse api respons to the json format
+            this.refreshTotals();
+
             if (data.message) {
                 this.isValid(data.message);
             }
         },
 
+        /**
+         * Refresh totals
+         */
+        refreshTotals: function() {
+            totalsDefaultProvider.estimateTotals(quote.shippingAddress());
+        },
 
         /**
          * @param {String} url - ajax url
