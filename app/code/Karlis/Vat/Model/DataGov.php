@@ -68,12 +68,6 @@ class DataGov
         try {
             $url = self::API_URL . '?sql=' . urlencode($this->getSQL());
 
-            $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/test.log');
-            $logger = new \Zend\Log\Logger();
-            $logger->addWriter($writer);
-            $logger->info($url);
-            $this->getCurlClient()->get($url);
-
             // We are saving response to the variable, in case if we need to get response value in multiple places.
             // So, we can just look for this value instead of multiple requests to the data.gov.lv
             $this->setResponse($this->getCurlClient()->getBody());
