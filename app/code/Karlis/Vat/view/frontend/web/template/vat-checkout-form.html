@@ -1,7 +1,6 @@
 <div>
-    <form id="vat-checkout-form" class="form" data-bind="attr: {'data-hasrequired': $t('* Required Fields')}">
+    <form id="vat-checkout-form" class="form form-vat-checkout" data-bind="attr: {'data-hasrequired': $t('* Required Fields')}">
         <fieldset class="fieldset">
-            <legend data-bind="i18n: 'Vat Checkout Form'"></legend>
             <p data-bind="html: details() "></p>
             <!-- ko foreach: getRegion('vat-checkout-form-fields') -->
             <!-- ko template: getTemplate() --><!-- /ko -->
